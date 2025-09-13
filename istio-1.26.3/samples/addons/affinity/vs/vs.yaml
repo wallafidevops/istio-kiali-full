@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kiali
+  namespace: istio-system
+spec:
+  hosts:
+    - "kiali.app.wsnobrega.life"
+  gateways:
+    - default/istio-gateway  # Referência ao Gateway configurado
+  http:
+    - match:
+        - uri:
+            prefix: /
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: kiali  # Nome do serviço do Grafana no namespace 'monitoring'
+            port:
+              number: 20001
+
