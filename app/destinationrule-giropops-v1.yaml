@@ -1,0 +1,11 @@
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: destinationrule-giropops-v1
+  namespace: giropops
+spec:
+  host: giropops-labs-portal
+  # host: giropops.app.wsnobrega.life
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN

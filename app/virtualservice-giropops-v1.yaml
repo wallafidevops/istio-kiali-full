@@ -1,0 +1,98 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: giropops-v1
+  namespace: giropops
+spec:
+  hosts:
+    #- "giropops-labs.io"
+    - "giropops.app.wsnobrega.life"
+  gateways:
+    #- gateway-giropops-v1
+    - default/istio-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /giropops
+      route:
+        - destination:
+            host: giropops-labs-portal.giropops.svc.cluster.local
+            port:
+              number: 80
+      rewrite:
+        uri: /
+    - match:
+        - uri:
+            prefix: /chaos
+      route:
+        - destination:
+            host: chaos-labs-service.giropops.svc.cluster.local
+            port:
+              number: 80
+      rewrite:
+        uri: /
+
+# apiVersion: networking.istio.io/v1
+# kind: VirtualService
+# metadata:
+#   name: giropops-v1
+#   namespace: giropops
+# spec:
+#   hosts:
+#     #- "giropops-labs.io"
+#     - "giropops.app.wsnobrega.life"
+#   gateways:
+#     - gateway-giropops-v1
+#     # - default/istio-gateway
+#   http:
+#     - match:
+#         - uri:
+#             prefix: /giropops
+#       route:
+#         - destination:
+#             host: giropops-labs-portal
+#             port:
+#               number: 80
+#       rewrite:
+#         uri: /
+#     - match:
+#         - uri:
+#             prefix: /strigus
+#       route:
+#         - destination:
+#             host: strigus-labs-service
+#             port:
+#               number: 80
+#       rewrite:
+#         uri: /
+#     - match:
+#         - uri:
+#             prefix: /chaos
+#       route:
+#         - destination:
+#             host: chaos-labs-service
+#             port:
+#               number: 80
+#       rewrite:
+#         uri: /
+#     - match:
+#         - uri:
+#             prefix: /girus
+#       route:
+#         - destination:
+#             host: girus-labs-service
+#             port:
+#               number: 80
+#       rewrite:
+#         uri: /
+#     - match:
+#         - uri:
+#             prefix: /silver
+#       route:
+#         - destination:
+#             host: silver-labs-service
+#             port:
+#               number: 80
+#       rewrite:
+#         uri: /
+
