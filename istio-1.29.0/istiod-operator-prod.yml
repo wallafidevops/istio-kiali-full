@@ -1,3 +1,66 @@
+# apiVersion: install.istio.io/v1alpha1
+# kind: IstioOperator
+# metadata:
+#   name: istio-prod
+#   namespace: istio-system
+# spec:
+#   profile: default
+#   # Logs de acesso no Envoy (útil pra observabilidade)
+#   meshConfig:
+#     accessLogFile: /dev/stdout
+#     defaultConfig:
+#       # Evita a app subir antes do sidecar
+#       holdApplicationUntilProxyStarts: true
+
+#   components:
+#     pilot:
+#       k8s:
+#         affinity:
+#           nodeAffinity:
+#             requiredDuringSchedulingIgnoredDuringExecution:
+#               nodeSelectorTerms:
+#               - matchExpressions:
+#                 - key: istio
+#                   operator: In
+#                   values: ["true"]
+#         tolerations:
+#         - key: "istio"
+#           operator: "Equal"
+#           value: "true"
+#           effect: "NoSchedule"
+#         # Alta disponibilidade mínima
+#         hpaSpec:
+#           minReplicas: 2
+#         podDisruptionBudget:
+#           minAvailable: 1
+#     ingressGateways:
+#     - name: istio-ingressgateway
+#       enabled: true
+#       k8s:
+#         service:
+#           type: ClusterIP
+#         affinity:
+#           nodeAffinity:
+#             requiredDuringSchedulingIgnoredDuringExecution:
+#               nodeSelectorTerms:
+#               - matchExpressions:
+#                 - key: istio
+#                   operator: In
+#                   values: ["true"]
+#         tolerations:
+#         - key: "istio"
+#           operator: "Equal"
+#           value: "true"
+#           effect: "NoSchedule"
+#         # Alta disponibilidade mínima
+#         hpaSpec:
+#           minReplicas: 2
+#         podDisruptionBudget:
+#           minAvailable: 1
+
+
+###cm jeager 
+
 apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 metadata:
@@ -5,12 +68,22 @@ metadata:
   namespace: istio-system
 spec:
   profile: default
-  # Logs de acesso no Envoy (útil pra observabilidade)
   meshConfig:
     accessLogFile: /dev/stdout
+    enableTracing: true
     defaultConfig:
-      # Evita a app subir antes do sidecar
       holdApplicationUntilProxyStarts: true
+      tracing: {}
+    defaultProviders:
+      metrics:
+        - prometheus
+      tracing:
+        - jaeger
+    extensionProviders:
+      - name: jaeger
+        opentelemetry:
+          service: jaeger-collector.istio-system.svc.cluster.local
+          port: 4317
 
   components:
     pilot:
@@ -28,7 +101,6 @@ spec:
           operator: "Equal"
           value: "true"
           effect: "NoSchedule"
-        # Alta disponibilidade mínima
         hpaSpec:
           minReplicas: 2
         podDisruptionBudget:
@@ -52,7 +124,6 @@ spec:
           operator: "Equal"
           value: "true"
           effect: "NoSchedule"
-        # Alta disponibilidade mínima
         hpaSpec:
           minReplicas: 2
         podDisruptionBudget:

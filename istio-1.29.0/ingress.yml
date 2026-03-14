@@ -13,7 +13,7 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-port: "15021"    
     alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:216989136189:certificate/6e3207c2-a1d1-4745-81d9-f517eba3dacf"
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'     
-    alb.ingress.kubernetes.io/group.name: grupo-ingress-2     
+    alb.ingress.kubernetes.io/group.name: grupo-istio    
 spec:
   ingressClassName: alb  
   rules:

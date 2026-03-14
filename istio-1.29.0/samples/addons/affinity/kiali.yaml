@@ -137,7 +137,11 @@ data:
         enabled: true
         external_url: "http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local:3000"   
       tracing:
-        enabled: false
+        enabled: true
+        provider: jaeger
+        internal_url: "http://tracing.istio-system.svc.cluster.local:16685/jaeger"
+        external_url: "http://tracing.istio-system.svc.cluster.local:16686/jaeger"
+    use_grpc: true
     identity:
       cert_file: ""
       private_key_file: ""

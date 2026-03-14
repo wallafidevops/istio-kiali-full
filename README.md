@@ -38,12 +38,12 @@ istioctl install -f istiod-operator-prod.yml -y
 
 ### 1. Criar o Gateway
 ```bash
-kubectl apply -f gateway.yaml
+kubectl apply -f gateway.yml
 ```
 
 ### 2. Criar o Ingress
 ```bash
-kubectl apply -f ingress.yaml
+kubectl apply -f ingress.yml
 ```
 
 ---
